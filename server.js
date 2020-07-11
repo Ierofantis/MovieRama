@@ -7,7 +7,6 @@ var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
-var usersRouter = require('./routes/users');
 
 var app = express();
 const { sequelize } = require("./models");
@@ -18,8 +17,8 @@ const passport = require('passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-app.get('/success', (req, res) => res.send("You have successfully logged in"));
-app.get('/error', (req, res) => res.send("error logging in"));
+app.get('/success', (req, res) => res.render('success'));
+app.get('/error', (req, res) => res.render('error'));
 
 passport.serializeUser(function (user, cb) {
   cb(null, user);
@@ -32,7 +31,6 @@ passport.deserializeUser(function (obj, cb) {
 /*  GITHUB AUTH  */
 
 const GitHubStrategy = require('passport-github').Strategy;
-
 const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID
 const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
 
@@ -42,6 +40,7 @@ passport.use(new GitHubStrategy({
   callbackURL: "/auth/github/callback"
 },
   function (accessToken, refreshToken, profile, cb) {
+    console.log(profile)
     return cb(null, profile);
   }
 ));
@@ -78,8 +77,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+/**
+ * Routes
+ */
+
 app.use('/', indexRouter);
-app.use('/users', usersRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {
@@ -99,4 +101,47 @@ app.use(function (err, req, res, next) {
 
 const port = process.env.PORT || 3000;
 
+const service = require("./services/movieService");
+
+const db = require("./models");
+
+const run = async () => {
+  const user1 = await service.createUser({
+    username: "Theodore",
+    email: "theodore@theodore"
+  });
+
+  const user2 = await service.createUser({
+    username: "Nick",
+    email: "nick@nick"
+  });
+
+  const comment1 = await service.createMovie(user1.id, {
+    title: "Name1",
+    description: "MovieText",
+    published: user1.username,
+  });
+  await service.createMovie(user2.id, {
+    title: "Name2",
+    description: "MovieText",
+    published: user2.username,
+  });
+
+  const tut1Data = await service.findUserById(user1.id);
+  console.log(
+    ">> Tutorial id=" + tut1Data.id,
+    JSON.stringify(tut1Data, null, 2)
+  );
+
+  const tut2Data = await service.findUserById(user2.id);
+  console.log(
+    ">> Tutorial id=" + tut2Data.id,
+    JSON.stringify(tut2Data, null, 2)
+  );
+};
+
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and re-sync db.");
+  run();
+});
 app.listen(port, () => console.log(`Server running on port ${port}`));

@@ -8,25 +8,15 @@ module.exports = (sequelize, DataTypes) => {
                 notEmpty: true,
             },
         },
-    });
-
-    user.associate = models => {
-        user.hasMany(models.movie, { onDelete: 'CASCADE' });
-    };
-
-    user.findByLogin = async login => {
-        let user = await user.findOne({
-            where: { username: login },
-        });
-
-        if (!user) {
-            user = await user.findOne({
-                where: { email: login },
-            });
+        email: {
+            type: DataTypes.STRING,
+            unique: true,
+            allowNull: false,
+            validate: {
+                notEmpty: true,
+            },
         }
-
-        return user;
-    };
+    });
 
     return user;
 };
