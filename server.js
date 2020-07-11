@@ -1,3 +1,5 @@
+require('dotenv').config();
+
 var createError = require('http-errors');
 var express = require('express');
 var path = require('path');
@@ -9,6 +11,49 @@ var usersRouter = require('./routes/users');
 
 var app = express();
 const { sequelize } = require("./models");
+
+/*  PASSPORT SETUP  */
+
+const passport = require('passport');
+app.use(passport.initialize());
+app.use(passport.session());
+
+app.get('/success', (req, res) => res.send("You have successfully logged in"));
+app.get('/error', (req, res) => res.send("error logging in"));
+
+passport.serializeUser(function (user, cb) {
+  cb(null, user);
+});
+
+passport.deserializeUser(function (obj, cb) {
+  cb(null, obj);
+});
+
+/*  GITHUB AUTH  */
+
+const GitHubStrategy = require('passport-github').Strategy;
+
+const GITHUB_CLIENT_ID = process.env.GITHUB_CLIENT_ID
+const GITHUB_CLIENT_SECRET = process.env.GITHUB_CLIENT_SECRET
+
+passport.use(new GitHubStrategy({
+  clientID: GITHUB_CLIENT_ID,
+  clientSecret: GITHUB_CLIENT_SECRET,
+  callbackURL: "/auth/github/callback"
+},
+  function (accessToken, refreshToken, profile, cb) {
+    return cb(null, profile);
+  }
+));
+
+app.get('/auth/github',
+  passport.authenticate('github'));
+
+app.get('/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/error' }),
+  function (req, res) {
+    res.redirect('/success');
+  });
 
 /**
  * Connect to Postgresql
@@ -51,7 +96,6 @@ app.use(function (err, req, res, next) {
   res.status(err.status || 500);
   res.render('error');
 });
-// app.get('/users', db.getUsers)
 
 const port = process.env.PORT || 3000;
 
