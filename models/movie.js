@@ -3,7 +3,11 @@ module.exports = (sequelize, Sequelize) => {
     const movie = sequelize.define("movie", {
         title: {
             type: Sequelize.STRING,
-            unique: true
+            unique: true,
+            allowNull: false,
+            validate: {
+                notEmpty: true,
+            },
         },
         description: {
             type: Sequelize.STRING

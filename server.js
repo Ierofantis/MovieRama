@@ -13,6 +13,7 @@ const session = require('express-session');
 /*  Express body parser  */
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
+const service = require("./services/movieService");
 
 app.use(cookieParser());
 
@@ -38,10 +39,14 @@ function isUserAuthenticated(req, res, next) {
 app.get('/secret', isUserAuthenticated, (req, res) => {
   res.send('You have reached the secret route');
 });
+app.get('/user',
+  (req, res) => res.send({ user: req.user })
+);
 
 /**
  * Routes
  */
+
 app.use(function (req, res, next) {
   if (!req.user)
     res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
@@ -49,7 +54,8 @@ app.use(function (req, res, next) {
 });
 app.get('/success', (req, res) => res.render('success'));
 app.get('/error', (req, res) => res.render('error'));
-app.use('/', indexRouter);
+app.get('/', (req, res) => res.render('index', { user: req.user }));
+app.get('/movie', (req, res) => res.render('movie', { user: req.user }));
 
 app.get('/auth/github',
   passport.authenticate('github', { scope: ['profile'] }));
@@ -64,6 +70,17 @@ app.get('/auth/github/callback',
 app.get('/logout', function (req, res) {
   req.logout();
   res.redirect('/');
+});
+
+app.post('/addMovie', function (req, res) {
+  console.log(req.body)
+  service.createMovie(req.user.id, {
+    title: req.body.title,
+    description: req.body.description,
+    published: "aadsd",
+  });
+  res.redirect('/');
+
 });
 
 /**

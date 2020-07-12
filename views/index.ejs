@@ -13,6 +13,7 @@
 <body>
 
     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
+        <a class="navbar-brand" href="/">MovieRama</a>
         <a class="navbar-brand" href="#">Sort By</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
             aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
@@ -36,12 +37,11 @@
         <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <!-- <% if (!user) { %>
+                    <% if (!user) { %>
                     <a class="nav-link" href="auth/github">Sign in with Github</a>
                     <% } else { %>
-                    <h2>Hello, <%= user.displayName %>.</h2>
-                    <% } %> -->
-                    <a class="nav-link" href="auth/github">Sign in with Github</a>
+                    <a class="nav-link">Hello, <%= user.username %>!</a>
+                    <% } %>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
@@ -55,7 +55,7 @@
         <div class="container">
             <h1 class="display-3">MovieRama</h1>
             <p>Welcome to the biggest social movie sharing platform! Add and vote your favorite movies !</p>
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">Add your Movie Now! &raquo;</a></p>
+            <p><a class="btn btn-primary btn-lg" href="/movie" role="button">Add your Movie Now! &raquo;</a></p>
         </div>
     </div>
 
