@@ -8,21 +8,16 @@ var logger = require('morgan');
 var indexRouter = require('./routes/index');
 var app = express();
 const { sequelize } = require("./models");
-const session = require('express-session');
 var bodyParser = require('body-parser')
-
+const session = require('express-session');
 /*  Express body parser  */
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+app.use(cookieParser());
+
 /*  Express session  */
-app.use(
-  session({
-    secret: 'cat',
-    resave: true,
-    saveUninitialized: true
-  })
-);
+app.use(session({ secret: 'ssshhhhh' }));
 
 /*  Passport Setup  */
 const passport = require('passport');
@@ -31,20 +26,33 @@ require('./config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
+// Middleware to check if the user is authenticated
+function isUserAuthenticated(req, res, next) {
+  if (req.user) {
+    next();
+  } else {
+    res.send('You must login!');
+  }
+}
+
+app.get('/secret', isUserAuthenticated, (req, res) => {
+  res.send('You have reached the secret route');
+});
+
 /**
  * Routes
  */
-
+app.use(function (req, res, next) {
+  if (!req.user)
+    res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
+  next();
+});
 app.get('/success', (req, res) => res.render('success'));
 app.get('/error', (req, res) => res.render('error'));
 app.use('/', indexRouter);
 
 app.get('/auth/github',
-  passport.authenticate('github'),
-  function (req, res) {
-    // The request will be redirected to GitHub for authentication, so this
-    // function will not be called.
-  });
+  passport.authenticate('github', { scope: ['profile'] }));
 
 app.get('/auth/github/callback',
   passport.authenticate('github', { failureRedirect: '/error' }),
@@ -52,10 +60,15 @@ app.get('/auth/github/callback',
     res.redirect('/success');
   });
 
+// route for logging out
+app.get('/logout', function (req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
 /**
  * Connect to Postgresql
  */
-
 sequelize
   .authenticate()
   .then(() => {

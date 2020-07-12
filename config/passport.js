@@ -13,7 +13,7 @@ module.exports = function (passport) {
             clientSecret: GITHUB_CLIENT_SECRET,
             callbackURL: "/auth/github/callback"
         }, (accessToken, refreshToken, profile, done) => {
-
+            console.log(accessToken);
             /* Match user */
             User.findOne({
                 where: {
@@ -28,7 +28,6 @@ module.exports = function (passport) {
                     {
                         email: profile.emails[0].value,
                         username: profile.username,
-
                     };
                     User.create(data).then(function (newUser, created) {
                         if (!newUser) {
@@ -45,7 +44,6 @@ module.exports = function (passport) {
             });
         }
         ));
-
 
     // serialize
     passport.serializeUser(function (user, done) {
