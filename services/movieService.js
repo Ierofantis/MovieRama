@@ -2,22 +2,22 @@ const db = require("../models");
 Movie = db.movie;
 User = db.user;
 
-// Create and Save new User
+/* Create and Save new User */
 exports.createUser = (user) => {
     return User.create({
         username: user.username,
         email: user.email
     })
         .then((user) => {
-            console.log(">> Created movie: " + JSON.stringify(user, null, 4));
+            console.log(">> Created user: " + JSON.stringify(user, null, 4));
             return user;
         })
         .catch((err) => {
-            console.log(">> Error while creating movie: ", err);
+            console.log(">> Error while creating user: ", err);
         });
 };
 
-// Create and Save new Movie
+/* Create and Save new Movie */
 exports.createMovie = (userId, movie) => {
     return Movie.create({
         title: movie.title,
@@ -33,7 +33,8 @@ exports.createMovie = (userId, movie) => {
             console.log(">> Error while creating movie: ", err);
         });
 }
-// Get the movies for a given user
+
+/* Get the movies for a given user */
 exports.findUserById = (userId) => {
     return User.findByPk(userId, { include: ["movies"] })
         .then((user) => {
@@ -44,7 +45,7 @@ exports.findUserById = (userId) => {
         });
 };
 
-// Get all users include movies
+/* Get all users include movies */
 exports.findAll = () => {
     return User.findAll({
         include: ["movies"],
