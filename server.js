@@ -5,7 +5,6 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-var indexRouter = require('./routes/index');
 var app = express();
 const { sequelize } = require("./models");
 var bodyParser = require('body-parser')
@@ -15,10 +14,15 @@ app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const service = require("./services/movieService");
 
+/*  Declare Routes  */
+const indexRoute = require("./routes/index");
+const helpRoutes = require("./routes/helpRoutes");
+const movieRoute = require("./routes/movie");
+
 app.use(cookieParser());
 
 /*  Express session  */
-app.use(session({ secret: 'ssshhhhh' }));
+app.use(session({ secret: 'secret' }));
 
 /*  Passport Setup  */
 const passport = require('passport');
@@ -27,35 +31,19 @@ require('./config/passport')(passport);
 app.use(passport.initialize());
 app.use(passport.session());
 
-// Middleware to check if the user is authenticated
-function isUserAuthenticated(req, res, next) {
-  if (req.user) {
-    next();
-  } else {
-    res.send('You must login!');
-  }
-}
-
-app.get('/secret', isUserAuthenticated, (req, res) => {
-  res.send('You have reached the secret route');
-});
-app.get('/user',
-  (req, res) => res.send({ user: req.user })
-);
-
 /**
  * Routes
  */
+
+app.use('/', indexRoute);
+app.use('/', helpRoutes);
+app.use('/movie', movieRoute);
 
 app.use(function (req, res, next) {
   if (!req.user)
     res.header('Cache-Control', 'private, no-cache, no-store, must-revalidate');
   next();
 });
-app.get('/success', (req, res) => res.render('success'));
-app.get('/error', (req, res) => res.render('error'));
-app.get('/', (req, res) => res.render('index', { user: req.user }));
-app.get('/movie', (req, res) => res.render('movie', { user: req.user }));
 
 app.get('/auth/github',
   passport.authenticate('github', { scope: ['profile'] }));
@@ -73,14 +61,17 @@ app.get('/logout', function (req, res) {
 });
 
 app.post('/addMovie', function (req, res) {
-  console.log(req.body)
-  service.createMovie(req.user.id, {
-    title: req.body.title,
-    description: req.body.description,
-    published: "aadsd",
-  });
-  res.redirect('/');
-
+  console.log(req.user)
+  if (req.user) {
+    service.createMovie(req.user.id, {
+      title: req.body.title,
+      description: req.body.description,
+    });
+    res.redirect('/');
+  }
+  else {
+    res.redirect('/error');
+  }
 });
 
 /**
@@ -132,9 +123,10 @@ app.use(function (err, req, res, next) {
 
 const port = process.env.PORT || 3000;
 
-// const service = require("./services/movieService");
 
-// const db = require("./models");
+/* feed database */
+
+//const db = require("./models");
 
 // const run = async () => {
 //   const user1 = await service.createUser({
@@ -149,13 +141,12 @@ const port = process.env.PORT || 3000;
 
 //   const comment1 = await service.createMovie(user1.id, {
 //     title: "Name1",
-//     description: "MovieText",
-//     published: user1.username,
+//     description: "MovieText"
 //   });
+
 //   await service.createMovie(user2.id, {
 //     title: "Name2",
-//     description: "MovieText",
-//     published: user2.username,
+//     description: "MovieText"
 //   });
 
 //   const tut1Data = await service.findUserById(user1.id);

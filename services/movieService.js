@@ -1,6 +1,7 @@
 const db = require("../models");
 Movie = db.movie;
 User = db.user;
+Rating = db.rating;
 
 /* Create and Save new User */
 exports.createUser = (user) => {
@@ -22,7 +23,6 @@ exports.createMovie = (userId, movie) => {
     return Movie.create({
         title: movie.title,
         description: movie.description,
-        published: movie.published,
         userId: userId
     })
         .then((movie) => {
@@ -46,10 +46,39 @@ exports.findUserById = (userId) => {
 };
 
 /* Get all users include movies */
-exports.findAll = () => {
+exports.findAllUsersAndMovies = () => {
     return User.findAll({
         include: ["movies"],
     }).then((users) => {
         return users;
     });
 };
+
+/* Get all movies */
+exports.findAllMovies = () => {
+    return Movie.findAll({
+        include: ["user"],
+    }).then((movies) => {
+        return movies.map(row => {
+            return row.dataValues
+        });
+    }).catch((err) => {
+        console.log(">> Error while finding All Movies: ", err);
+    });
+};
+
+/* Create and Save new Rating Per User */
+exports.createMovie = (userId, movie) => {
+    return Movie.create({
+        title: movie.title,
+        description: movie.description,
+        userId: userId
+    })
+        .then((movie) => {
+            console.log(">> Created movie: " + JSON.stringify(movie, null, 8));
+            return movie;
+        })
+        .catch((err) => {
+            console.log(">> Error while creating movie: ", err);
+        });
+}

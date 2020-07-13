@@ -50,60 +50,34 @@
         </div>
     </nav>
 
-    <!-- Main jumbotron for a primary marketing message or call to action -->
     <div class="jumbotron">
         <div class="container">
             <h1 class="display-3">MovieRama</h1>
             <p>Welcome to the biggest social movie sharing platform! Add and vote your favorite movies !</p>
+            <% if (!user) { %>
+            <p><a class="btn btn-primary btn-lg" href="#" role="button">Login to add your Movie Now! &raquo;</a></p>
+            <% } else { %>
             <p><a class="btn btn-primary btn-lg" href="/movie" role="button">Add your Movie Now! &raquo;</a></p>
+            <% } %>
         </div>
     </div>
 
     <div class="container">
-        <!-- Example row of columns -->
         <div class="row">
+            <% for(var i=0; i<movies.length; i++) { %>
             <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
-                    mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-                    magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
+                <% if (movies.length >= 0) { %>
+                <h2> <%= movies[i].title %></h2>
+                <h5>Posted by : <%= movies[i].user.username %> at
+                    <%= moment(movies[i].createdAt).format('DD/MM-YYYY') %></h5>
+                <p> <%= movies[i].description %> </p>
+                <p>127 Likes | 5 Hates
+                    <span class="paddingLike"> You like this movie | Unlike this
+                        movie</span>
+                </p>
             </div>
-            <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
-                    mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-                    magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
-            <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id
-                    ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                    condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
-            <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
-                    mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-                    magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
-            <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec id elit non mi porta gravida at eget metus. Fusce dapibus, tellus ac cursus commodo, tortor
-                    mauris condimentum nibh, ut fermentum massa justo sit amet risus. Etiam porta sem malesuada
-                    magna mollis euismod. Donec sed odio dui. </p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
-            <div class="col-md-4">
-                <h2>Heading</h2>
-                <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id
-                    ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris
-                    condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-                <p><a class="btn btn-secondary" href="#" role="button">View details &raquo;</a></p>
-            </div>
+            <% } %>
+            <% } %>
         </div>
         <hr>
 

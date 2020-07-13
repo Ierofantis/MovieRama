@@ -12,15 +12,15 @@ module.exports = (sequelize, Sequelize) => {
         description: {
             type: Sequelize.STRING
         },
-        published: {
-            type: Sequelize.STRING
-        },
-        like: {
+        likes: {
             type: Sequelize.INTEGER
         },
-        hate: {
+        hates: {
             type: Sequelize.INTEGER
-        }
+        },
+        userId: {
+            type: Sequelize.INTEGER
+        },
     });
 
     return movie;
