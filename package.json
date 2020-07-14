@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "start": "node ./bin/www"
+    "start": "node server.js"
   },
   "dependencies": {
     "bcryptjs": "^2.4.3",
@@ -40,5 +40,17 @@
     "babel-register": "^6.26.0",
     "babel-watch": "^7.0.0",
     "jsdoc": "^3.6.4"
-  }
+  },
+  "description": "`sequelize migration:create --name addcolumn-updated_at-event-table`",
+  "main": "server.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Ierofantis/MovieRama.git"
+  },
+  "author": "Theodore",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Ierofantis/MovieRama/issues"
+  },
+  "homepage": "https://github.com/Ierofantis/MovieRama#readme"
 }
