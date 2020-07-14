@@ -12,13 +12,13 @@ module.exports = (sequelize, Sequelize) => {
         description: {
             type: Sequelize.STRING
         },
-        likes: {
+        user_id: {
             type: Sequelize.INTEGER
         },
-        hates: {
+        like_counts: {
             type: Sequelize.INTEGER
         },
-        userId: {
+        hate_counts: {
             type: Sequelize.INTEGER
         },
     });

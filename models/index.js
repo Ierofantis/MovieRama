@@ -25,20 +25,9 @@ db.rating = require("./rating.js")(sequelize, Sequelize);
 //user to movies
 db.user.hasMany(db.movie, { as: "movies" });
 
-//rating to movie
-db.rating.belongsTo(db.movie, {
-    foreignKey: "movieId",
-    as: "movie",
-});
-
-db.rating.belongsTo(db.movie, {
-    foreignKey: "userId",
-    as: "userRatingId",
-});
-
 //movies
 db.movie.belongsTo(db.user, {
-    foreignKey: "userId",
+    foreignKey: "user_id",
     as: "user"
 });
 

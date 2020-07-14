@@ -55,7 +55,8 @@
             <h1 class="display-3">MovieRama</h1>
             <p>Welcome to the biggest social movie sharing platform! Add and vote your favorite movies !</p>
             <% if (!user) { %>
-            <p><a class="btn btn-primary btn-lg" href="#" role="button">Login to add your Movie Now! &raquo;</a></p>
+            <p><a class="btn btn-primary btn-lg" href="auth/github" role="button">Login to add your Movie Now!
+                    &raquo;</a></p>
             <% } else { %>
             <p><a class="btn btn-primary btn-lg" href="/movie" role="button">Add your Movie Now! &raquo;</a></p>
             <% } %>
@@ -69,18 +70,25 @@
                 <% if (movies.length >= 0) { %>
                 <h2> <%= movies[i].title %></h2>
                 <h5>Posted by : <%= movies[i].user.username %> at
-                    <%= moment(movies[i].createdAt).format('DD/MM-YYYY') %></h5>
+                    <%= moment(movies[i].created_at).format('DD/MM-YYYY') %></h5>
                 <p> <%= movies[i].description %> </p>
-                <p>127 Likes | 5 Hates
-                    <span class="paddingLike"> You like this movie | Unlike this
-                        movie</span>
-                </p>
+                <form action="/addRating" method="post">
+                    <input class="social-like" type="submit" name="like" value="like" />
+                    <input type="hidden" name="user_id" value=<%= movies[i].user.id %> />
+                    <input type="hidden" name="movie_id" value=<%= movies[i].id %> <span
+                        class="like"><%= movies[i].like_counts %></span></input>
+                </form>
+                <form action="/addRating" method="post">
+                    <input class="social-dislike" type="submit" name="dislike" value="dislike"></input>
+                    <input type="hidden" name="user_id" value=<%= movies[i].user.id %> />
+                    <input type="hidden" name="movie_id" value=<%= movies[i].id %> <span
+                        class="like"><%= movies[i].hate_counts %></span></input>
+                </form>
             </div>
             <% } %>
             <% } %>
         </div>
         <hr>
-
     </div> <!-- /container -->
     </main>
 
@@ -88,5 +96,17 @@
         <p>&copy; Theodore P. 2020</p>
     </footer>
 </body>
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script>
+    var instance = axios.create({
+        baseURL: "http://localhost:3000" //use your express server's url(address) and port here
+    });
+
+    function onclick() {
+        instance.post("/").then(response => {
+            //response.data will have received data
+        }
+}
+</script>
 
 </html>

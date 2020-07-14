@@ -18,3 +18,13 @@ a {
 .paddingLike {
   padding:20px;
 }
+
+.social-like{
+  background-color:green;
+  color:white;
+}
+
+.social-dislike{
+  background-color:red;
+  color:white;
+}

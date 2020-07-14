@@ -13,6 +13,7 @@ const session = require('express-session');
 app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 const service = require("./services/movieService");
+const conditionService = require("./services/conditionsForLikesAndHates");
 
 /*  Declare Routes  */
 const indexRoute = require("./routes/index");
@@ -24,12 +25,21 @@ app.use(cookieParser());
 /*  Express session  */
 app.use(session({ secret: 'secret' }));
 
-/*  Passport Setup  */
+/*  Passport Setup and auth routes */
 const passport = require('passport');
 require('./config/passport')(passport);
 
 app.use(passport.initialize());
 app.use(passport.session());
+
+app.get('/auth/github',
+  passport.authenticate('github', { scope: ['profile'] }));
+
+app.get('/auth/github/callback',
+  passport.authenticate('github', { failureRedirect: '/error' }),
+  function (req, res) {
+    res.redirect('/success');
+  });
 
 /**
  * Routes
@@ -45,23 +55,7 @@ app.use(function (req, res, next) {
   next();
 });
 
-app.get('/auth/github',
-  passport.authenticate('github', { scope: ['profile'] }));
-
-app.get('/auth/github/callback',
-  passport.authenticate('github', { failureRedirect: '/error' }),
-  function (req, res) {
-    res.redirect('/success');
-  });
-
-// route for logging out
-app.get('/logout', function (req, res) {
-  req.logout();
-  res.redirect('/');
-});
-
 app.post('/addMovie', function (req, res) {
-  console.log(req.user)
   if (req.user) {
     service.createMovie(req.user.id, {
       title: req.body.title,
@@ -71,6 +65,70 @@ app.post('/addMovie', function (req, res) {
   }
   else {
     res.redirect('/error');
+  }
+});
+
+app.post('/addRating', async function (req, res) {
+
+  reqUser = req.body.user_id;
+  reqMovie = req.body.movie_id;
+  reqLike = req.body.like;
+  reqHate = req.body.dislike;
+
+  if (req.user) {
+    reqUserId = req.user.id;
+    if (req.body.user_id != req.user.id) {
+
+      let query = `
+      SELECT * FROM ratings 
+      WHERE movie_id = ${reqMovie}
+      AND user_id = ${reqUser}`;
+
+      let movieItem = await sequelize.query(query, {
+        type: sequelize.QueryTypes.SELECT
+      });
+
+      let queryLikes = `
+      SELECT like_counts,hate_counts FROM movies 
+      WHERE id = ${reqMovie}
+      AND user_id = ${reqUser}`;
+
+      let queryItem = await sequelize.query(queryLikes, {
+        type: sequelize.QueryTypes.SELECT
+      });
+
+      let check = await service.checkUserAndMovie(movieItem, req)
+      let checkFromDb = await service.checkLikesAndHatesFromDb(movieItem, req)
+
+      if (movieItem.length > 0) {
+
+        let likeCounter = queryItem[0].like_counts;
+        let hateCounter = queryItem[0].hate_counts;
+
+        conditionService.conditionsForLikesAndHates(check, checkFromDb, likeCounter, hateCounter)
+
+        service.updateRatingPerUserAndMovie(reqUser, reqMovie, {
+          likes: check.likeBool === true || check.likeBool === false ? check.likeBool : checkFromDb[Object.keys(checkFromDb)[0]],
+          hates: check.hateBool === true || check.hateBool === false ? check.hateBool : checkFromDb[Object.keys(checkFromDb)[1]],
+          user_id: reqUser,
+          movie_id: reqMovie
+        });
+        res.send("you have updated preference")
+      } else {
+        reqLike ? service.updateLikesAndHatesFromDb(reqMovie, 1, 0) : service.updateLikesAndHatesFromDb(reqMovie, 0, 1)
+        service.createRatingPerUserAndMovie(reqUser, reqMovie, {
+          likes: reqLike ? true : false,
+          hates: reqHate ? true : false,
+          user_id: reqUser,
+          movie_id: reqMovie
+        });
+        res.send("you have created preference")
+      }
+    } else {
+      res.send("You can't vote your movie !")
+    }
+  } else {
+    res.send("You have to be logged in !")
   }
 });
 
@@ -126,7 +184,7 @@ const port = process.env.PORT || 3000;
 
 /* feed database */
 
-//const db = require("./models");
+// const db = require("./models");
 
 // const run = async () => {
 //   const user1 = await service.createUser({
@@ -139,14 +197,13 @@ const port = process.env.PORT || 3000;
 //     email: "nick@nick"
 //   });
 
-//   const comment1 = await service.createMovie(user1.id, {
-//     title: "Name1",
-//     description: "MovieText"
-//   });
-
-//   await service.createMovie(user2.id, {
+//   const comment1 = await service.createMovie(user2.id, {
 //     title: "Name2",
 //     description: "MovieText"
+//   });
+//   const movie = await service.createRatingPerUserAndMovie({
+//     like: true,
+//     hate: true,
 //   });
 
 //   const tut1Data = await service.findUserById(user1.id);

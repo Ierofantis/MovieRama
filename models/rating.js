@@ -1,16 +1,16 @@
 
 module.exports = (sequelize, Sequelize) => {
     const rating = sequelize.define("rating", {
-        like: {
+        likes: {
             type: Sequelize.BOOLEAN
         },
-        hate: {
+        hates: {
             type: Sequelize.BOOLEAN
         },
-        movieId: {
+        movie_id: {
             type: Sequelize.INTEGER
         },
-        userId: {
+        user_id: {
             type: Sequelize.INTEGER
         },
     });

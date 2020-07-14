@@ -14,20 +14,20 @@ module.exports = {
       description: {
         type: Sequelize.STRING
       },
-      likes: {
+      user_id: {
         type: Sequelize.INTEGER
       },
-      hates: {
+      like_counts: {
         type: Sequelize.INTEGER
       },
-      userId: {
+      hate_counts: {
         type: Sequelize.INTEGER
       },
-      createdAt: {
+      created_at: {
         allowNull: false,
         type: Sequelize.DATE
       },
-      updatedAt: {
+      updated_at: {
         allowNull: false,
         type: Sequelize.DATE
       }
