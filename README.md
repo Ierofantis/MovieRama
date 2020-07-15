@@ -1,16 +1,16 @@
 # MovieRama
 
-#Please star the repo thank you
+# Please star the repo thank you
 
-#App on the heroku
+# App on the heroku
 
 http://joli-monsieur-61212.herokuapp.com/
 
-#Github Sign in instructions
+# Github Sign in instructions
 
 You must have Name and Public email, you can check it here https://github.com/settings/profile otherwise you will not be able to signup/login
 
-#Installation instructions
+# Installation instructions
 
 1) Clone the repository from your github client from https://github.com/Ierofantis/MovieRama.git or from ssh git@github.com:Ierofantis/MovieRama.git
 2) You will need node js installed on your machine https://nodejs.org/en/download
@@ -27,7 +27,7 @@ You must have Name and Public email, you can check it here https://github.com/se
 
 And that's it
 
-#User instructions
+# User instructions
 
 As a vistor:
 
