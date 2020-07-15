@@ -41,5 +41,7 @@ As a registered user:
 2) Like or Dislike movies (not your own)
 3) View all movies submitted by a specific user
 
+I am using ejs template engine and after some actions you have to refresh the page to see the changed behavior
+
 © Theodore P. 2020
 
