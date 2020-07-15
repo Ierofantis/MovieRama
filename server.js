@@ -192,44 +192,44 @@ const port = process.env.PORT || 3000;
 
 /* feed database */
 
-// const db = require("./models");
+const db = require("./models");
 
-// const run = async () => {
-//   const user1 = await service.createUser({
-//     username: "Theodore",
-//     email: "theodore@theodore"
-//   });
+const run = async () => {
+  const user1 = await service.createUser({
+    username: "Theodore",
+    email: "theodore@theodore"
+  });
 
-//   const user2 = await service.createUser({
-//     username: "Nick",
-//     email: "nick@nick"
-//   });
+  const user2 = await service.createUser({
+    username: "Nick",
+    email: "nick@nick"
+  });
 
-//   const movieOne = await service.createMovie(user2.id, {
-//     title: "Name2",
-//     description: "MovieText"
-//   });
-//   const movieTwo = await service.createMovie(user2.id, {
-//     title: "Name3",
-//     description: "MovieText"
-//   });
+  const movieOne = await service.createMovie(user2.id, {
+    title: "Name2",
+    description: "MovieText"
+  });
+  const movieTwo = await service.createMovie(user2.id, {
+    title: "Name3",
+    description: "MovieText"
+  });
 
-//   const movieData = await service.findUserById(user1.id);
-//   console.log(
-//     ">> Tutorial id=" + movieData.id,
-//     JSON.stringify(movieData, null, 2)
-//   );
+  const movieData = await service.findUserById(user1.id);
+  console.log(
+    ">> Tutorial id=" + movieData.id,
+    JSON.stringify(movieData, null, 2)
+  );
 
-//   const movieDataTwo = await service.findUserById(user2.id);
-//   console.log(
-//     ">> Tutorial id=" + movieDataTwo.id,
-//     JSON.stringify(movieDataTwo, null, 2)
-//   );
-// };
+  const movieDataTwo = await service.findUserById(user2.id);
+  console.log(
+    ">> Tutorial id=" + movieDataTwo.id,
+    JSON.stringify(movieDataTwo, null, 2)
+  );
+};
 
-// db.sequelize.sync({ force: true }).then(() => {
-//   console.log("Drop and re-sync db.");
-//   run();
-// });
+db.sequelize.sync({ force: true }).then(() => {
+  console.log("Drop and re-sync db.");
+  run();
+});
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

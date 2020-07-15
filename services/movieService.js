@@ -129,7 +129,7 @@ exports.checkUserAndMovie = (movieItem, req) => {
 }
 
 /* Check Likes And Hates From DB */
-exports.checkLikesAndHatesFromDb = (movieItem, req) => {
+exports.checkLikesAndHatesFromDb = (movieItem) => {
 
     let likeFromDb = "likeBool";
     let hateFromDb = "hateBool"
