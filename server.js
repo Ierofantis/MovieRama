@@ -19,6 +19,10 @@ const conditionService = require("./services/conditionsForLikesAndHates");
 const indexRoute = require("./routes/index");
 const helpRoutes = require("./routes/helpRoutes");
 const movieRoute = require("./routes/movie");
+const sortByLikesRoutes = require("./routes/sortByLikes");
+const sortByHatesRoutes = require("./routes/sortByHates");
+const sortByDatesRoutes = require("./routes/sortByDates");
+const findMoviesByUser = require("./routes/findMoviesByUser");
 
 app.use(cookieParser());
 
@@ -48,6 +52,10 @@ app.get('/auth/github/callback',
 app.use('/', indexRoute);
 app.use('/', helpRoutes);
 app.use('/movie', movieRoute);
+app.use('/likes', sortByLikesRoutes);
+app.use('/hates', sortByHatesRoutes);
+app.use('/dates', sortByDatesRoutes);
+app.use('/user-movies', findMoviesByUser);
 
 app.use(function (req, res, next) {
   if (!req.user)
@@ -197,25 +205,25 @@ const port = process.env.PORT || 3000;
 //     email: "nick@nick"
 //   });
 
-//   const comment1 = await service.createMovie(user2.id, {
+//   const movieOne = await service.createMovie(user2.id, {
 //     title: "Name2",
 //     description: "MovieText"
 //   });
-//   const movie = await service.createRatingPerUserAndMovie({
-//     like: true,
-//     hate: true,
+//   const movieTwo = await service.createMovie(user2.id, {
+//     title: "Name3",
+//     description: "MovieText"
 //   });
 
-//   const tut1Data = await service.findUserById(user1.id);
+//   const movieData = await service.findUserById(user1.id);
 //   console.log(
-//     ">> Tutorial id=" + tut1Data.id,
-//     JSON.stringify(tut1Data, null, 2)
+//     ">> Tutorial id=" + movieData.id,
+//     JSON.stringify(movieData, null, 2)
 //   );
 
-//   const tut2Data = await service.findUserById(user2.id);
+//   const movieDataTwo = await service.findUserById(user2.id);
 //   console.log(
-//     ">> Tutorial id=" + tut2Data.id,
-//     JSON.stringify(tut2Data, null, 2)
+//     ">> Tutorial id=" + movieDataTwo.id,
+//     JSON.stringify(movieDataTwo, null, 2)
 //   );
 // };
 

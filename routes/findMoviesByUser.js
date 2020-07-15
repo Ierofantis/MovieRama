@@ -4,11 +4,11 @@ const service = require("../services/movieService");
 
 var moment = require('moment');
 
-/* GET home page. */
+/* GET date page. */
 router.get('/', async (req, res) => {
-  let movies = await service.findAllMovies();
-  console.log(movies)
-  res.render('index', { user: req.user, session: req.session, movies: movies, moment: moment });
+    let movies = await service.findMoviesByUser(2);
+
+    res.render('findMoviesByUser', { user: req.user, session: req.session, movies: movies, moment: moment });
 });
 
 module.exports = router;

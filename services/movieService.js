@@ -156,3 +156,20 @@ exports.updateLikesAndHatesFromDb = (req, like, hate) => {
             console.log(">> Error while Update Likes And Hates to Movie DB: ", err);
         });
 }
+
+/* Get the movies for a given user id */
+exports.findMoviesByUser = (user_id) => {
+    return Movie.findAll({
+        where: {
+            user_id: 2
+        }, include: ["user"],
+    })
+        .then((movies) => {
+            return movies.map(row => {
+                return row.dataValues
+            });
+        })
+        .catch((err) => {
+            console.log(">> Error while finding Movie: ", err);
+        });
+};

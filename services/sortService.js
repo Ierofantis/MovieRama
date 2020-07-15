@@ -3,29 +3,37 @@ Movie = db.movie;
 User = db.user;
 Rating = db.rating;
 
-
-/* Get the movies for a given user */
-exports.sortByLikes = (user_id) => {
-    //     SELECT * FROM movies 
-    //     ORDER BY
-    //    "like_counts";
-    Movie.findAll({ order: '"like_counts" DESC' })
-
+/* Sort the movies by likes */
+exports.sortByLikes = async () => {
+    return Movie.findAll({ include: ["user"], order: [['like_counts', 'DESC NULLS LAST']] }).then((movies) => {
+        return movies.map(row => {
+            return row.dataValues
+        });
+    }).catch((err) => {
+        console.log(">> Error while  Sort the movies by likes: ", err);
+    });
 };
 
 
-/* Get the movies for a given user */
+/* Sort the movies by hates */
 exports.sortByHates = (user_id) => {
-    //     SELECT * FROM movies 
-    //     ORDER BY
-    //    "hate_counts";
-
+    return Movie.findAll({ include: ["user"], order: [['hate_counts', 'DESC NULLS LAST']] }).then((movies) => {
+        return movies.map(row => {
+            return row.dataValues
+        });
+    }).catch((err) => {
+        console.log(">> Error while  Sort the movies by hates: ", err);
+    });
 };
 
 
-/* Get the movies for a given user */
-exports.sortByDate = (user_id) => {
-    //     SELECT * FROM movies 
-    //     ORDER BY
-    //    "created_at";
+/* Get the movies by date */
+exports.sortByDates = (user_id) => {
+    return Movie.findAll({ include: ["user"], order: [['createdAt', 'DESC']] }).then((movies) => {
+        return movies.map(row => {
+            return row.dataValues
+        });
+    }).catch((err) => {
+        console.log(">> Error while  Sort the movies by hates: ", err);
+    });
 };
