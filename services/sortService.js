@@ -4,7 +4,7 @@ User = db.user;
 Rating = db.rating;
 
 /* Sort the movies by likes */
-exports.sortByLikes = async () => {
+exports.sortByLikes = () => {
     return Movie.findAll({ include: ["user"], order: [['like_counts', 'DESC NULLS LAST']] }).then((movies) => {
         return movies.map(row => {
             return row.dataValues
@@ -16,7 +16,7 @@ exports.sortByLikes = async () => {
 
 
 /* Sort the movies by hates */
-exports.sortByHates = (user_id) => {
+exports.sortByHates = () => {
     return Movie.findAll({ include: ["user"], order: [['hate_counts', 'DESC NULLS LAST']] }).then((movies) => {
         return movies.map(row => {
             return row.dataValues
@@ -28,7 +28,7 @@ exports.sortByHates = (user_id) => {
 
 
 /* Get the movies by date */
-exports.sortByDates = (user_id) => {
+exports.sortByDates = () => {
     return Movie.findAll({ include: ["user"], order: [['createdAt', 'DESC']] }).then((movies) => {
         return movies.map(row => {
             return row.dataValues
