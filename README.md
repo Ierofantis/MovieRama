@@ -6,6 +6,9 @@
 
 http://joli-monsieur-61212.herokuapp.com/
 
+#Github Sign in instructions
+You must have Name and Public email, you can check it here https://github.com/settings/profile otherwise you will not be able to signup/login
+
 #Installation instructions
 
 1) Clone the repository from your github client from https://github.com/Ierofantis/MovieRama.git or from ssh git@github.com:Ierofantis/MovieRama.git
@@ -29,7 +32,7 @@ As a vistor:
 
 1) You can see the movies (Title,Description,Author,Date,likes,dislikes)
 2) You can sort by likes,dislikes,date
-3) Github signup/login ( You must have Name and Public email, you can check it here https://github.com/settings/profile otherwise you will not be able to signup/login)
+3) Github signup/login ( You must have Name and Public email, you can check it here https://github.com/settings/profile otherwise you will not be able to signup/login )
 
 As a registered user:
 
