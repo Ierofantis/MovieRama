@@ -1,6 +1,6 @@
 const service = require("../services/movieService");
 
-exports.conditionsForLikesAndHates = (check, checkFromDb, likeCounter, hateCounter) => {
+exports.conditionsForLikesAndHates = (reqMovie, check, checkFromDb, likeCounter, hateCounter) => {
 
     if (typeof check !== "undefined") {
         if (checkFromDb[Object.keys(checkFromDb)[0]] === true && check.likeBool === false) {

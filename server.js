@@ -113,7 +113,7 @@ app.post('/addRating', async function (req, res) {
         let likeCounter = queryItem[0].like_counts;
         let hateCounter = queryItem[0].hate_counts;
 
-        conditionService.conditionsForLikesAndHates(check, checkFromDb, likeCounter, hateCounter)
+        conditionService.conditionsForLikesAndHates(reqMovie, check, checkFromDb, likeCounter, hateCounter)
 
         service.updateRatingPerUserAndMovie(reqUser, reqMovie, {
           likes: typeof check !== "undefined" && check.likeBool === true || typeof check !== "undefined" && check.likeBool === false ? check.likeBool : checkFromDb[Object.keys(checkFromDb)[0]],
@@ -123,7 +123,8 @@ app.post('/addRating', async function (req, res) {
         });
         res.send("you have updated preference")
       } else {
-        reqLike ? service.updateLikesAndHatesFromDb(reqMovie, 1, 0) : service.updateLikesAndHatesFromDb(reqMovie, 0, 1)
+        likeHateCounter = 0;
+        reqLike ? service.updateLikesAndHatesFromDb(reqMovie, likeHateCounter += 1, 0) : service.updateLikesAndHatesFromDb(reqMovie, 0, likeHateCounter += 1)
         service.createRatingPerUserAndMovie(reqUser, reqMovie, {
           likes: reqLike ? true : false,
           hates: reqHate ? true : false,
