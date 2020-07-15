@@ -123,8 +123,12 @@ app.post('/addRating', async function (req, res) {
         });
         res.send("you have updated preference")
       } else {
-        likeHateCounter = 0;
-        reqLike ? service.updateLikesAndHatesFromDb(reqMovie, likeHateCounter += 1, 0) : service.updateLikesAndHatesFromDb(reqMovie, 0, likeHateCounter += 1)
+
+        let likeHateCounter = 0;
+        let likeUpdatedCounter = queryItem[0].like_counts ? queryItem[0].like_counts + 1 : likeHateCounter += 1;
+        let hateUpdatedCounter = queryItem[0].hate_counts ? queryItem[0].hate_counts + 1 : likeHateCounter += 1;
+
+        reqLike ? service.updateLikesAndHatesFromDb(reqMovie, likeUpdatedCounter, 0) : service.updateLikesAndHatesFromDb(reqMovie, 0, hateUpdatedCounter)
         service.createRatingPerUserAndMovie(reqUser, reqMovie, {
           likes: reqLike ? true : false,
           hates: reqHate ? true : false,
