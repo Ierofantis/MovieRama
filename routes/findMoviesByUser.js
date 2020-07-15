@@ -4,7 +4,7 @@ const service = require("../services/movieService");
 
 var moment = require('moment');
 
-/* GET date page. */
+/* GET user's page. */
 router.get('/:userId', async (req, res) => {
     let UserId = req.params.userId
     let movies = await service.findMoviesByUser(UserId);

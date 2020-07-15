@@ -57,7 +57,7 @@ exports.findAllUsersAndMovies = () => {
 /* Get all movies */
 exports.findAllMovies = () => {
     return Movie.findAll({
-        include: ["user"],
+        include: ["user"], order: [['createdAt', 'DESC']],
     }).then((movies) => {
         return movies.map(row => {
             return row.dataValues
