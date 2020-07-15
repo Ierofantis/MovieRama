@@ -161,7 +161,7 @@ exports.updateLikesAndHatesFromDb = (req, like, hate) => {
 exports.findMoviesByUser = (user_id) => {
     return Movie.findAll({
         where: {
-            user_id: 2
+            user_id: user_id
         }, include: ["user"],
     })
         .then((movies) => {
