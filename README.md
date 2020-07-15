@@ -7,6 +7,7 @@
 http://joli-monsieur-61212.herokuapp.com/
 
 #Github Sign in instructions
+
 You must have Name and Public email, you can check it here https://github.com/settings/profile otherwise you will not be able to signup/login
 
 #Installation instructions
