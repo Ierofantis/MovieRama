@@ -1,5 +1,7 @@
 # MovieRama
 
+#Please star the repo thank you
+
 #App on the heroku
 
 http://joli-monsieur-61212.herokuapp.com/
