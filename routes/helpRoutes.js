@@ -9,4 +9,10 @@ router.get('/error', function (req, res) {
     res.render('error');
 })
 
+router.get('/logout', function (req, res) {
+    req.logout();
+    res.redirect('/');
+});
+
+
 module.exports = router;
