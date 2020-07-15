@@ -1,14 +1,8 @@
 # MovieRama
 
-# Migrations Sequelize
+#App on the heroku
 
-## Create Migration
-
-`sequelize migration:create --name addcolumn-updated_at-event-table`
-
-# Run Migration
-
-
+http://joli-monsieur-61212.herokuapp.com/
 
 #Installation instructions
 
