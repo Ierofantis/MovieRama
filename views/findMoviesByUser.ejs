@@ -70,7 +70,7 @@
                 <% if (movies.length >= 0) { %>
                 <h2> <%= movies[i].title %></h2>
                 <h5>Posted by : <%= movies[i].user.username %> at
-                    <%= moment(movies[i].created_at).format('DD/MM-YYYY') %></h5>
+                    <%= moment(movies[i].created_at).format('DD/MM/YYYY') %></h5>
                 <p> <%= movies[i].description %> </p>
                 <form action="/addRating" method="post">
                     <input class="social-like" type="submit" name="like" value="like" />
