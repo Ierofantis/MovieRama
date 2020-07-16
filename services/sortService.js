@@ -34,6 +34,6 @@ exports.sortByDates = () => {
             return row.dataValues
         });
     }).catch((err) => {
-        console.log(">> Error while  Sort the movies by hates: ", err);
+        console.log(">> Error while  Sort the movies by dates: ", err);
     });
 };
