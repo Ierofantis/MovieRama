@@ -214,30 +214,15 @@ const run = async () => {
     email: "theodore@theodore"
   });
 
-  const user2 = await service.createUser({
-    username: "Nick",
-    email: "nick@nick"
-  });
-
-  const movieOne = await service.createMovie(user2.id, {
-    title: "Name2",
-    description: "MovieText"
-  });
-  const movieTwo = await service.createMovie(user2.id, {
-    title: "Name3",
+  const movieOne = await service.createMovie(user1.id, {
+    title: "Hello Movie",
     description: "MovieText"
   });
 
   const movieData = await service.findUserById(user1.id);
   console.log(
-    ">> Tutorial id=" + movieData.id,
+    ">> Movie id=" + movieData.id,
     JSON.stringify(movieData, null, 2)
-  );
-
-  const movieDataTwo = await service.findUserById(user2.id);
-  console.log(
-    ">> Tutorial id=" + movieDataTwo.id,
-    JSON.stringify(movieDataTwo, null, 2)
   );
 };
 

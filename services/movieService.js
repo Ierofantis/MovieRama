@@ -74,7 +74,7 @@ exports.updateRatingPerUserAndMovie = (user_id, movie_id, rating) => {
         hates: rating.hates,
         user_id: user_id,
         movie_id: movie_id
-    }, { where: { user_id: user_id } })
+    }, { where: { user_id: user_id, movie_id: movie_id } })
         .then((rating) => {
             console.log(">> Update Rating Per User: " + JSON.stringify(rating, null, 7));
             return rating;
