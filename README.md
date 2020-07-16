@@ -43,5 +43,7 @@ As a registered user:
 
 I am using ejs template engine and after some actions you have to refresh the page to see the changed behavior
 
+![alt tag](https://i.imgur.com/yCbxIDj.jpg)
+
 © Theodore P. 2020
 
