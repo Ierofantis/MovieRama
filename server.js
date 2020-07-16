@@ -85,12 +85,13 @@ app.post('/addRating', async function (req, res) {
 
   if (req.user) {
     reqUserId = req.user.id;
-    if (req.body.user_id != req.user.id) {
+
+    if (req.body.user_id != reqUserId) {
 
       let query = `
       SELECT * FROM ratings 
       WHERE movie_id = ${reqMovie}
-      AND user_id = ${reqUser}`;
+      AND user_id = ${reqUserId}`;
 
       let movieItem = await sequelize.query(query, {
         type: sequelize.QueryTypes.SELECT
@@ -109,30 +110,39 @@ app.post('/addRating', async function (req, res) {
       let checkFromDb = await service.checkLikesAndHatesFromDb(movieItem, req)
 
       if (movieItem.length > 0) {
-
         let likeCounter = queryItem[0].like_counts;
         let hateCounter = queryItem[0].hate_counts;
 
         conditionService.conditionsForLikesAndHates(reqMovie, check, checkFromDb, likeCounter, hateCounter)
 
-        service.updateRatingPerUserAndMovie(reqUser, reqMovie, {
+        service.updateRatingPerUserAndMovie(reqUserId, reqMovie, {
           likes: typeof check !== "undefined" && check.likeBool === true || typeof check !== "undefined" && check.likeBool === false ? check.likeBool : checkFromDb[Object.keys(checkFromDb)[0]],
           hates: typeof check !== "undefined" && check.hateBool === true || typeof check !== "undefined" && check.hateBool === false ? check.hateBool : checkFromDb[Object.keys(checkFromDb)[1]],
-          user_id: reqUser,
+          user_id: reqUserId,
           movie_id: reqMovie
         });
         res.send("you have updated preference")
       } else {
 
-        let likeHateCounter = 0;
-        let likeUpdatedCounter = queryItem[0].like_counts ? queryItem[0].like_counts + 1 : likeHateCounter += 1;
-        let hateUpdatedCounter = queryItem[0].hate_counts ? queryItem[0].hate_counts + 1 : likeHateCounter += 1;
+        let queryLikesHatesMovie = `
+        SELECT like_counts,hate_counts FROM movies 
+        WHERE id = ${reqMovie}`;
 
-        reqLike ? service.updateLikesAndHatesFromDb(reqMovie, likeUpdatedCounter, 0) : service.updateLikesAndHatesFromDb(reqMovie, 0, hateUpdatedCounter)
-        service.createRatingPerUserAndMovie(reqUser, reqMovie, {
+        let queryItemLikesAndHates = await sequelize.query(queryLikesHatesMovie, {
+          type: sequelize.QueryTypes.SELECT
+        });
+
+        let likeCounter = 0;
+        let hateCounter = 0;
+        let likeUpdatedCounter = queryItemLikesAndHates[0].like_counts ? queryItemLikesAndHates[0].like_counts + 1 : likeCounter += 1;
+        let hateUpdatedCounter = queryItemLikesAndHates[0].hate_counts ? queryItemLikesAndHates[0].hate_counts + 1 : hateCounter += 1;
+
+        console.log("asdasdasd", reqLike)
+        reqLike ? service.updateLikesAndHatesFromDb(reqMovie, likeUpdatedCounter, queryItemLikesAndHates[0].hate_counts) : service.updateLikesAndHatesFromDb(reqMovie, queryItemLikesAndHates[0].like_counts, hateUpdatedCounter)
+        service.createRatingPerUserAndMovie(reqUserId, reqMovie, {
           likes: reqLike ? true : false,
           hates: reqHate ? true : false,
-          user_id: reqUser,
+          user_id: reqUserId,
           movie_id: reqMovie
         });
         res.send("you have created preference")
