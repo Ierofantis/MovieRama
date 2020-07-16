@@ -137,7 +137,6 @@ app.post('/addRating', async function (req, res) {
         let likeUpdatedCounter = queryItemLikesAndHates[0].like_counts ? queryItemLikesAndHates[0].like_counts + 1 : likeCounter += 1;
         let hateUpdatedCounter = queryItemLikesAndHates[0].hate_counts ? queryItemLikesAndHates[0].hate_counts + 1 : hateCounter += 1;
 
-        console.log("asdasdasd", reqLike)
         reqLike ? service.updateLikesAndHatesFromDb(reqMovie, likeUpdatedCounter, queryItemLikesAndHates[0].hate_counts) : service.updateLikesAndHatesFromDb(reqMovie, queryItemLikesAndHates[0].like_counts, hateUpdatedCounter)
         service.createRatingPerUserAndMovie(reqUserId, reqMovie, {
           likes: reqLike ? true : false,
