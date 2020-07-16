@@ -107,7 +107,7 @@ app.post('/addRating', async function (req, res) {
       });
 
       let check = await service.checkUserAndMovie(movieItem, req)
-      let checkFromDb = await service.checkLikesAndHatesFromDb(movieItem, req)
+      let checkFromDb = await service.checkLikesAndHatesFromDb(movieItem)
 
       if (movieItem.length > 0) {
         let likeCounter = queryItem[0].like_counts;
