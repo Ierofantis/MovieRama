@@ -72,13 +72,13 @@
                 <h5>Posted by : <a href="/user-movies/<%= movies[i].user.id %>"><%= movies[i].user.username %> </a>
                     </a>at <%= moment(movies[i].created_at).format('DD/MM/YYYY') %></h5>
                 <p> <%= movies[i].description %> </p>
-                <form action="/addRating" method="post">
+                <form action="/rating/addRating" method="post">
                     <input class="social-like" type="submit" name="like" value="like" />
                     <input type="hidden" name="user_id" value=<%= movies[i].user.id %> />
                     <input type="hidden" name="movie_id" value=<%= movies[i].id %> <span
                         class="like"><%= movies[i].like_counts %></span></input>
                 </form>
-                <form action="/addRating" method="post">
+                <form action="/rating/addRating" method="post">
                     <input class="social-dislike" type="submit" name="dislike" value="dislike"></input>
                     <input type="hidden" name="user_id" value=<%= movies[i].user.id %> />
                     <input type="hidden" name="movie_id" value=<%= movies[i].id %> <span
