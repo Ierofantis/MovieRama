@@ -6,6 +6,15 @@
 
 http://joli-monsieur-61212.herokuapp.com/
 
+# Things to Improve
+
+1) Unit Test to conditionsForLikesAndHates etc...
+2) Integration tests to routes
+3) Better naming to routes, variables, methods
+4) Change for loops to checkUserAndMovie to keys [0] and from checkLikesAndHatesFromDb 
+5) Add jdocs
+6) Add Mocha for code coverage
+
 # Github Sign in instructions
 
 You must have Name and Public email, you can check it here https://github.com/settings/profile otherwise you will not be able to signup/login
