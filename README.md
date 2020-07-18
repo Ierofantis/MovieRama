@@ -12,7 +12,7 @@ http://joli-monsieur-61212.herokuapp.com/
 2) Instanbul for code coverage
 3) Better naming to routes, variables, methods
 4) Change for loops to checkUserAndMovie to keys [0] and from checkLikesAndHatesFromDb 
-5) Add jdocs
+5) Add jsdoc
 
 # Github Sign in instructions
 
