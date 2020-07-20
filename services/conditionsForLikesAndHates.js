@@ -12,6 +12,9 @@ exports.conditionsForLikesAndHates = (reqMovie, check, checkFromDb, likeCounter,
                 let sumLike = likeCounter + 1;
                 service.updateLikesAndHatesFromDb(reqMovie, sumLike, hateCounter);
             }
+            else {
+                console.log(">> Error on conditionsForLikesAndHates");
+            }
 
             if (checkFromDb[Object.keys(checkFromDb)[1]] === true & check.hateBool === false) {
                 let subtractHate = hateCounter - 1;
