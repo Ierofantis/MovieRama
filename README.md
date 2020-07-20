@@ -8,12 +8,11 @@ http://joli-monsieur-61212.herokuapp.com/
 
 # Things to Improve
 
-1) Unit Test to conditionsForLikesAndHates etc...
-2) Integration tests to routes
+1) Unit Tests and add Mocha for conditionsForLikesAndHates etc...
+2) Instanbul for code coverage
 3) Better naming to routes, variables, methods
 4) Change for loops to checkUserAndMovie to keys [0] and from checkLikesAndHatesFromDb 
-5) Add jdocs
-6) Add Mocha for code coverage
+5) Add jsdoc
 
 # Github Sign in instructions
 
